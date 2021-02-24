@@ -20,9 +20,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('avatar')->default('https://static.thenounproject.com/png/363640-200.png');
-            // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // $table->rememberToken();
+            $table->enum('gender',['male','female'])->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
