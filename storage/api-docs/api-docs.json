@@ -1,0 +1,298 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Helpy Api Documentaion",
+        "description": "This documentation for Helpy",
+        "contact": {
+            "email": "abdulrahman.masoud.official@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "api/documentation": {},
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Login In Helpy",
+                "description": "You Must Add Valed Email & Password",
+                "operationId": "userLogin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "You Must Add Vailed Email",
+                                        "type": "email"
+                                    },
+                                    "password": {
+                                        "description": "You Must Add Vailed Password",
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "200": {
+                        "description": "Success Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "ٌRegister In Helpy",
+                "description": "ٌYou Must add real data Like Name Email Phone Number And Password",
+                "operationId": "userRegister",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "f_name",
+                                    "l_name",
+                                    "email",
+                                    "phone",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "f_name": {
+                                        "description": "You must add First Name",
+                                        "type": "string"
+                                    },
+                                    "l_name": {
+                                        "description": "You must add Last Name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "You must add Email",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "You must add Phone Number",
+                                        "type": "string"
+                                    },
+                                    "avatar": {
+                                        "description": "Avatar Is Optionel",
+                                        "type": "file"
+                                    },
+                                    "password": {
+                                        "description": "You must add Password",
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "200": {
+                        "description": "Success Request"
+                    },
+                    "201": {
+                        "description": "Cearated Done"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "ٌLogout From Helpy",
+                "description": "ٌYou Must Add Token To get access Logout",
+                "operationId": "userLogout",
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get Porofile Data",
+                "description": "This To Get Full Data About Auth User",
+                "operationId": "getProfileData",
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/profile/update": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update Profile Data ",
+                "description": "This To Update Full Data About Auth User",
+                "operationId": "Update Profile",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "f_name",
+                                    "l_name",
+                                    "email",
+                                    "phone",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "f_name": {
+                                        "description": "You must add First Name",
+                                        "type": "string"
+                                    },
+                                    "l_name": {
+                                        "description": "You must add Last Name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "You must add Email",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "You must add Phone Number",
+                                        "type": "phone"
+                                    },
+                                    "avatar": {
+                                        "description": "Avatar Is Optionel",
+                                        "type": "file"
+                                    },
+                                    "password": {
+                                        "description": "You must add Password",
+                                        "type": "password"
+                                    },
+                                    "country": {
+                                        "description": "Country Is Optional",
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "description": "City Is Optional",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "Address Is Optional",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "200": {
+                        "description": "Success Request",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Authorization token obtained from logging in.",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "Bearer"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
