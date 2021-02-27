@@ -32,7 +32,10 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
-   
+    public function markers()
+    {
+        return $this->hasMany(Marker::class);
+    }
     
 
 
