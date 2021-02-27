@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\LoginRequest;
+use App\Http\Requests\API\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -70,25 +72,9 @@ class AuthController extends Controller
      * )
 */
 
-    public function login(Request $request){
-        // 1- Valedation
-        $validator = Validator::make($request->all(),[
-            'email'=> 'required|email',
-            'password'=> 'required',
-        ],$messages =[
-            'email' => 'Pleas Add Valid Email address',
-            'email.required' => 'We need to know your email address!',
-            'password.required' => 'We need to know your Password',
-        ]);
-        $errors = $validator->errors();
-        if($validator->fails()){
-            return response()->json([
-                'status'=>false,
-                'msg'=>'Error',
-                'errors'=>$errors
-            ],Response::HTTP_BAD_REQUEST);
-        }
-
+    public function login(LoginRequest $request){
+     
+        // dd($request->inputs());
         // 2- Check User
         $credentials = $request->only('email', 'password');
         $token =  Auth::guard('api')->attempt($credentials);
@@ -187,40 +173,17 @@ class AuthController extends Controller
      * )
 */
 
-    public function register(Request $request){
-        // 1- Valedation
-        $validator = Validator::make($request->all(),[
-            'f_name'=> 'required',
-            'l_name'=> 'required',
-            'email'=> 'required|email|unique:users,email',
-            'phone'=> 'required|size:11',
-            'avatar' => 'nullable|file|mimes:jpg,png,jpge,jpeg',
-            'password'=> 'required',
-        ],$messages =[
-            'email' => 'Pleas Add Valid Email address',
-            'name.required' => 'We need to know your Name',
-            'email.required' => 'We need to know your email address!',
-            'password.required' => 'We need to know your Password',
-        ]);
-        // 2- Get Errors
-        $errors = $validator->errors();
-        if($validator->fails()){
-            return response()->json([
-                'status'=>false,
-                'errors'=>$errors
-            ],Response::HTTP_BAD_REQUEST);
-        }
+    public function register(RegisterRequest $request){
         // 3- Check If request Has A File
-        if ($request->hasFile('avatar')) {$path = $request->file('avatar')->store('uploads/avatars','public');}
-        // 4- Insert Data 
-        User::insert([
-            'f_name'=>$request->f_name,
-            'l_name'=>$request->l_name,
-            'email'=>$request->email,
-            'phone'=>$request->phone,
-             'avatar'=> $request->hasFile('avatar') ? $request->file('avatar')->hashName(): "https://static.thenounproject.com/png/363640-200.png",
-            'password'=>bcrypt($request->password)
-        ]);
+        // if ($request->hasFile('avatar')) {
+        //     $path = $request->file('avatar')->store('uploads/avatars','public');
+        // }
+
+        User::create($request->except('password') + [
+            'password' => bcrypt($request->password),
+            // 'avatar'=> $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "https://static.thenounproject.com/png/363640-200.png",
+            ]);
+
         // 5- Return Success Response 
         return response()->json([
             'status'=>true,

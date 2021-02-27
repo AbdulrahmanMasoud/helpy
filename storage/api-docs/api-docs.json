@@ -238,6 +238,10 @@
                                         "description": "You must add Password",
                                         "type": "password"
                                     },
+                                    "gender": {
+                                        "description": "You must add (male or female) only",
+                                        "type": "select box"
+                                    },
                                     "country": {
                                         "description": "Country Is Optional",
                                         "type": "string"

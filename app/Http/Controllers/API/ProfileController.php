@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\UpdateProfileRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
@@ -109,6 +106,11 @@ class ProfileController extends Controller
      *                      description="You must add Password"
      *                  ),
      *                  @OA\Property(
+     *                      property="gender",
+     *                      type="select box",
+     *                      description="You must add (male or female) only"
+     *                  ),
+     *                  @OA\Property(
      *                      property="country",
      *                      type="string",
      *                      description="Country Is Optional"
@@ -139,39 +141,16 @@ class ProfileController extends Controller
      * )
 */
 
-    public function updateProfile(Request $request)
+    public function updateProfile(UpdateProfileRequest $request)
     {
-        // 1- Full Valedation
-        $validator = Validator::make($request->all(),[
-            'f_name'=> 'required',
-            'l_name'=> 'required',
-            'email'=> 'required|email|'.Rule::unique('users')->ignore(Auth::id()),
-            'phone'=> 'required|size:11',
-            'avatar' => 'nullable|file|mimes:jpg,png,jpge,jpeg',
-            'password'=> 'required',
-            'country'=> 'required',
-            'city'=> 'required',
-            'address'=> 'required',
-        ],$messages =[ // 2- Custom Message For Valedation
-            'email' => 'Pleas Add Valid Email address',
-            'name.required' => 'We need to know your Name',
-            'email.required' => 'We need to know your email address!',
-            'password.required' => 'We need to know your Password',
-        ]);
-        // 3- If Valedation Has Errors
-        if($validator->fails()){
-            return response()->json([
-                'status'=>false,
-                'msg'=>'Errorr',
-                'errors'=>$validator->errors()
-            ],Response::HTTP_BAD_REQUEST);
-        }
         // 4- If Requst Has File
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('uploads/avatars','public');
         }
         // 5- Get User Data
         $user = User::where('id',Auth::id())->first();
+
+
        // 6- Update Data
         $updateUser = User::where('id',Auth::id())->update([
             'f_name'=>$request->f_name,
