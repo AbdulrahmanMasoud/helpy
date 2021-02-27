@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MarkerController;
 use App\Http\Controllers\API\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,8 +38,8 @@ Route::group(['middleware' => ['auth:api'],'prefix' => 'v1'], function () {
     Route::prefix('profile')->group(function () {
         Route::get('/',[ProfileController::class,'index']);
         Route::post('update',[ProfileController::class,'updateProfile']);
-
     });
+    Route::apiResource('marker',MarkerController::class);
 
     
 });
