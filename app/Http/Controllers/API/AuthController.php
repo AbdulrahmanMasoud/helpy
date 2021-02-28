@@ -174,15 +174,11 @@ class AuthController extends Controller
 */
 
     public function register(RegisterRequest $request){
-        // 3- Check If request Has A File
-        // if ($request->hasFile('avatar')) {
-        //     $path = $request->file('avatar')->store('uploads/avatars','public');
-        // }
-
+        if ($request->hasFile('avatar')) {$path = $request->file('avatar')->store('uploads/avatars','public');}
         User::create($request->except('password') + [
             'password' => bcrypt($request->password),
-            // 'avatar'=> $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "https://static.thenounproject.com/png/363640-200.png",
-            ]);
+            'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "defult/def.png"
+        ]);
 
         // 5- Return Success Response 
         return response()->json([

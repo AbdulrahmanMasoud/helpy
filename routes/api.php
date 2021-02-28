@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\HelpedController;
 use App\Http\Controllers\API\MarkerController;
 use App\Http\Controllers\API\ProfileController;
 use Illuminate\Http\Request;
@@ -40,6 +41,12 @@ Route::group(['middleware' => ['auth:api'],'prefix' => 'v1'], function () {
         Route::post('update',[ProfileController::class,'updateProfile']);
     });
     Route::apiResource('marker',MarkerController::class);
+    // Route::apiResource('help/{$id}',HelpedController::class);
+
+    // Route::post('marker/{id}/help/',[HelpedController::class,'help']);
+    Route::group(['prefix'=>'marker'],function(){
+        Route::apiResource('/{marker}/help',HelpedController::class);
+    });
 
     
 });

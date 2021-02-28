@@ -27,4 +27,10 @@ class Marker extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function helped()
+    {
+        return $this->hasOne(Helped::class);
+        
+    }
 }
