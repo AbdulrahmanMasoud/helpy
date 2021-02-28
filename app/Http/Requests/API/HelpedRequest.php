@@ -24,6 +24,7 @@ class HelpedRequest extends FormRequest
     public function rules()
     {
         return [
+            'marker_id'=>'unique',
             'description'=>'nullable|min:50',
             'proof'=>'nullable|file|mimes:jpg,bmp,png,jpge',
         ];
