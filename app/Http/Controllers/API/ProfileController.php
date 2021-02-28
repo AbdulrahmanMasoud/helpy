@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UpdateProfileRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
@@ -42,6 +43,7 @@ class ProfileController extends Controller
     {
         // 1- new obj
         $user = Auth::user();
+        $user->avatar =public_path('storage/app/public/uploads/avatars').'/'.$user->avatar;
         // 2- Response Data
         return response()->json([
             'status' => true,

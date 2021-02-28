@@ -28,9 +28,12 @@ class MarkerResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'proof' => $this->proof,
-            'status' => $this->status,
+            'status' => $this->status ==  1?  "تمت المساعده":"لم تتم المساعده",
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'links'=>[
+                'help' => url('api/v1/marker/'.$this->id.'/help/')
+            ]
           ];
     }
 }

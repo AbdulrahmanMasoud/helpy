@@ -22,9 +22,11 @@ class MarkerController extends Controller
    
     public function store(AddMarkerRequest $request)
     {
+       
         Marker::create(
             $request->except('user_id') + [
-            'user_id' => Auth::id()
+            'user_id' => Auth::id(),
+            'proof' => $request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null
             ]);
 
         // 5- Return Success Response 
@@ -51,7 +53,7 @@ class MarkerController extends Controller
             'msg' => 'You can only edit your own marker.'],
              403);
       }
-
+      $request->proof=$request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null;
         $marker->update($request->all());
         return response()->json([
             'status'=>true,
