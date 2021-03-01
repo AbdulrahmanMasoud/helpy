@@ -18,7 +18,61 @@ class HelpedController extends Controller
      * [2] Make This Marker Helped 
      * [3] Return Success Message 
      */
-    public function store(HelpedRequest $request, $marker){
+
+    
+    /**
+     * @OA\Post(
+     *      path="/api/v1/marker/{marker}/help",
+     *      operationId="Help Marker",
+     *      tags={"Helped"},
+     *      summary="Help Marker",
+     *      description="ٌJust To Help This Marker By Id",
+     *      security={
+     *         {"bearer": {}}
+     *      },
+     *      @OA\Parameter(
+     *          name="marker",
+     *          description="Must Add Marker Id To Can Help It ",
+     *          required=true,
+     *          in="path",
+     *          example="2",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="proof",
+     *                      type="file",
+     *                      description="Proof Is Optionel"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string",
+     *                      description="Description  Is Optionel"
+     *                  ),
+     *                  
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response( 
+     *          response=201,
+     *          description="Cearated Done",
+     *          @OA\MediaType(
+     *              mediaType="application/json"
+     *          )
+     *      )
+     * )
+*/
+    public function store(HelpedRequest $request,$marker){
         // [1] Add New Row
         Helped::firstOrCreate([
             'user_id'=> Auth::id(),
