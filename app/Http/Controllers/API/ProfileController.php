@@ -109,8 +109,8 @@ class ProfileController extends Controller
      *                  ),
      *                  @OA\Property(
      *                      property="gender",
-     *                      type="select box",
-     *                      description="You must add (male or female) only"
+     *                      type="string",
+     *                      enum={"-","female", "male"}
      *                  ),
      *                  @OA\Property(
      *                      property="country",
