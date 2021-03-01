@@ -174,10 +174,10 @@ class AuthController extends Controller
 */
 
     public function register(RegisterRequest $request){
-        if ($request->hasFile('avatar')) {$path = $request->file('avatar')->store('uploads/avatars','public');}
+       // if ($request->hasFile('avatar')) {$path = $request->file('avatar')->store('uploads/avatars','public');}
         User::create($request->except('password') + [
             'password' => bcrypt($request->password),
-            'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "defult/def.png"
+            'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->storeAs('uploads/avatars','public'): "defult/def.png"
         ]);
 
         // 5- Return Success Response 

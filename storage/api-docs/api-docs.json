@@ -161,6 +161,283 @@
                 ]
             }
         },
+        "/api/v1/marker": {
+            "post": {
+                "tags": [
+                    "Marker"
+                ],
+                "summary": "ٌJust Add Marker",
+                "description": "ٌJust Add Marker To find Any Body Can Help",
+                "operationId": "Add Marker",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "gender",
+                                    "mental_state",
+                                    "adult",
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Just Add Title About This Marker",
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "enum": [
+                                            "-",
+                                            "ذكر",
+                                            "انثى"
+                                        ]
+                                    },
+                                    "mental_state": {
+                                        "type": "string",
+                                        "enum": [
+                                            "-",
+                                            "سوي عقليا",
+                                            "غير سوي عقليا"
+                                        ]
+                                    },
+                                    "adult": {
+                                        "type": "string",
+                                        "enum": [
+                                            "-",
+                                            "طفل",
+                                            "بالغ",
+                                            "مُسن"
+                                        ]
+                                    },
+                                    "latitude": {
+                                        "description": "Must Add Latitude Like: 20.303418",
+                                        "type": "decimel"
+                                    },
+                                    "longitude": {
+                                        "description": "Must Add Longitude Like: 44.392414",
+                                        "type": "decimel"
+                                    },
+                                    "proof": {
+                                        "description": "Proof Is Optionel",
+                                        "type": "file"
+                                    },
+                                    "description": {
+                                        "description": "Description  Is Optionel",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "201": {
+                        "description": "Cearated Done",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/marker/{marker}": {
+            "get": {
+                "tags": [
+                    "Marker"
+                ],
+                "summary": "Get One Marker",
+                "description": "Returns One Marker",
+                "operationId": "getMarker",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Marker Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Marker"
+                ],
+                "summary": "ٌJust Update Marker",
+                "description": "ٌJust Update Marker By Id",
+                "operationId": "Update Marker",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Must Add Marker Id To Update It And Must You are Owner",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title",
+                                    "gender",
+                                    "mental_state",
+                                    "adult",
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "This Method Must Be (put)",
+                                        "type": "string"
+                                    },
+                                    "title": {
+                                        "description": "Just Add Title About This Marker",
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "enum": [
+                                            "-",
+                                            "ذكر",
+                                            "انثى"
+                                        ]
+                                    },
+                                    "mental_state": {
+                                        "type": "string",
+                                        "enum": [
+                                            "-",
+                                            "سوي عقليا",
+                                            "غير سوي عقليا"
+                                        ]
+                                    },
+                                    "adult": {
+                                        "type": "string",
+                                        "enum": [
+                                            "-",
+                                            "طفل",
+                                            "بالغ",
+                                            "مُسن"
+                                        ]
+                                    },
+                                    "latitude": {
+                                        "description": "Must Add Latitude Like: 20.303418",
+                                        "type": "decimel"
+                                    },
+                                    "longitude": {
+                                        "description": "Must Add Longitude Like: 44.392414",
+                                        "type": "decimel"
+                                    },
+                                    "proof": {
+                                        "description": "Proof Is Optionel",
+                                        "type": "file"
+                                    },
+                                    "description": {
+                                        "description": "Description  Is Optionel",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "201": {
+                        "description": "Cearated Done",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Marker"
+                ],
+                "summary": "Delete Marker",
+                "description": "Just You Can Delete You Owne Marker",
+                "operationId": "deleteMarker",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Marker Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/v1/profile": {
             "get": {
                 "tags": [
@@ -239,8 +516,12 @@
                                         "type": "password"
                                     },
                                     "gender": {
-                                        "description": "You must add (male or female) only",
-                                        "type": "select box"
+                                        "type": "string",
+                                        "enum": [
+                                            "-",
+                                            "female",
+                                            "male"
+                                        ]
                                     },
                                     "country": {
                                         "description": "Country Is Optional",
