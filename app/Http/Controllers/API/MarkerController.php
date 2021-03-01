@@ -18,6 +18,33 @@ class MarkerController extends Controller
      * This Method To Get All Markers
      * [1] Just Get All Marker From Resource And Make a Pagination Like 10 per Page
      */
+     /**
+     * @OA\Get(
+     *      path="/api/v1/marker",
+     *      operationId="getAllMarker",
+     *      tags={"Marker"},
+     *      summary="Get All Marker",
+     *      description="Returns One Marker",
+     *      security={
+     *         {"bearer": {}}
+     *      },
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json"
+     *          )
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
     public function index()
     {
         // [1] Just Get All Marker
