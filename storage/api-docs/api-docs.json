@@ -161,6 +161,64 @@
                 ]
             }
         },
+        "/api/v1/marker/{marker}/help": {
+            "post": {
+                "tags": [
+                    "Helped"
+                ],
+                "summary": "Help Marker",
+                "description": "ٌJust To Help This Marker By Id",
+                "operationId": "Help Marker",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Must Add Marker Id To Can Help It ",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "proof": {
+                                        "description": "Proof Is Optionel",
+                                        "type": "file"
+                                    },
+                                    "description": {
+                                        "description": "Description  Is Optionel",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "201": {
+                        "description": "Cearated Done",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/api/v1/marker": {
             "post": {
                 "tags": [
