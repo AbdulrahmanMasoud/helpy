@@ -7,12 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\LoginRequest;
 use App\Http\Requests\API\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-use function PHPUnit\Framework\isNull;
 
 class AuthController extends Controller
 {
@@ -76,20 +73,20 @@ class AuthController extends Controller
      
         // dd($request->inputs());
         // 2- Check User
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validated(); // Get evrey thing validated from input
         $token =  Auth::guard('api')->attempt($credentials);
 
         // 3- if User Not Exist
-        if(!$token){ 
-            return response()->json([
-            'status'=>false,
-            'msg'=>'This User Not Exist',
-            ],Response::HTTP_NOT_FOUND);
-        }
+        // if(!$token){ 
+        //     return response()->json([
+        //     'status'=>false,
+        //     'msg'=>'This User Not Exist',
+        //     ],Response::HTTP_NOT_FOUND);
+        // }
 
         // 4- if User Exist
         $user = Auth::guard('api')->user();
-        $user->user_token = $token;
+        // $user->user_token = $token;
         return response()->json([
             'status'=>true,
             'msg'=>'Login User Done ',
@@ -175,11 +172,9 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request){
        // if ($request->hasFile('avatar')) {$path = $request->file('avatar')->store('uploads/avatars','public');}
-        User::create($request->except('password') + [
-            'password' => bcrypt($request->password),
-            'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->storeAs('uploads/avatars','public'): "defult/def.png"
+        User::create($request->validated() + [
+            'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "defult/def.png"
         ]);
-
         // 5- Return Success Response 
         return response()->json([
             'status'=>true,

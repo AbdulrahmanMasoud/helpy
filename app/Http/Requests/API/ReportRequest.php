@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\API;
 
-use  App\Http\Requests\API\FormRequest;
+use App\Http\Requests\API\FormRequest;
 
-class LoginRequest extends FormRequest
+class ReportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'=> 'required|email|exists:users,email',
-            'password'=> 'required|min:6',
+            'title'=>'required|min:10|string',
+            'description'=>'required|min:30',
+            'proof'=>'nullable|file|mimes:jpg,bmp,png,jpge',
         ];
     }
 }

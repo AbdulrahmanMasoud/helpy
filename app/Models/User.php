@@ -36,8 +36,18 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Marker::class);
     }
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
     
-
+/**
+ * القيمه قبل ما تتحفظ ف الداتابيز هيتم عليها العمليه دي
+ */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 
 
 /**************************************This For Jwt Auth*************************************/

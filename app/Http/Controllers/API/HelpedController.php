@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\HelpedRequest;
 use App\Models\Helped;
 use App\Models\Marker;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -75,8 +74,10 @@ class HelpedController extends Controller
     public function store(HelpedRequest $request,$marker){
         // [1] Add New Row
         Helped::firstOrCreate([
-            'user_id'=> Auth::id(),
+            // لو لقي دي موجودههيعمل تعديل بالنسبه للباقي لو مش لاقيها موجوده هيعمل واحده جدايده 
             'marker_id'=>$marker,
+            'user_id'=> Auth::id(),
+        ],[
             'description' => $request->description,
             'proof' => $request->proof,
         ]);
