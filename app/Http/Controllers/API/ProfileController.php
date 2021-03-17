@@ -43,7 +43,7 @@ class ProfileController extends Controller
     {
         // 1- new obj
         $user = Auth::user();
-        $user->avatar =public_path('storage/app/public/uploads/avatars').'/'.$user->avatar;
+        $user->avatar = public_path('storage/app/public/uploads/avatars').'/'.$user->avatar;
         // 2- Response Data
         return response()->json([
             'status' => true,
@@ -146,26 +146,17 @@ class ProfileController extends Controller
     public function updateProfile(UpdateProfileRequest $request)
     {
         // 4- If Requst Has File
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('uploads/avatars','public');
-        }
+        // if ($request->hasFile('avatar')) {
+        //     $path = $request->file('avatar')->store('uploads/avatars','public');
+        // }
         // 5- Get User Data
-        $user = User::where('id',Auth::id())->first();
+        // $user = User::where('id',Auth::id())->first();
+
+        // auth()->user();
 
 
        // 6- Update Data
-        $updateUser = User::where('id',Auth::id())->update([
-            'f_name'=>$request->f_name,
-            'l_name'=>$request->l_name,
-            'email'=>$request->email,
-            'phone'=>$request->phone,
-            'avatar'=> $request->hasFile('avatar') ? $request->file('avatar')->hashName():$user->avatar,// 5- this from user data if reqesut has avatar will save the name of this name if not will update the avatar fron user data
-            'password' => bcrypt($request->password),
-            'gender'=>$request->gender,
-            'country'=>$request->country,
-            'city'=>$request->city,
-            'address'=>$request->address,
-        ]);
+        $updateUser =  auth()->user()->update($request->validated());
        // 7- If Updated Done
         if($updateUser){ 
             return response()->json([

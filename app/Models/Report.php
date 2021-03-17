@@ -5,37 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Marker extends Model
+class Report extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'user_id',
+        'marker_id',
         'title',
-        'gender',
-        'mental_state',
-        'adult',
         'description',
-        'latitude',
-        'longitude',
         'proof',
-        'status',
         'created_at',
         'updated_at'
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    public function helped()
+    public function marker()
     {
-        return $this->hasOne(Helped::class);
-        
-    }
-    public function report()
-    {
-        return $this->hasMany(Report::class);
-        
+        return $this->belongsTo(Marker::class);
     }
 }

@@ -9,8 +9,7 @@ use App\Models\Marker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class MarkerController extends Controller
 {
@@ -18,10 +17,37 @@ class MarkerController extends Controller
      * This Method To Get All Markers
      * [1] Just Get All Marker From Resource And Make a Pagination Like 10 per Page
      */
+     /**
+     * @OA\Get(
+     *      path="/api/v1/marker",
+     *      operationId="getAllMarker",
+     *      tags={"Marker"},
+     *      summary="Get All Marker",
+     *      description="Returns One Marker",
+     *      security={
+     *         {"bearer": {}}
+     *      },
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json"
+     *          )
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
     public function index()
     {
         // [1] Just Get All Marker
-        $marker = Marker::simplePaginate(10);
+        $marker = Marker::with('user')->simplePaginate(10);
         return MarkerResource::collection($marker);
     }
 
@@ -110,7 +136,7 @@ class MarkerController extends Controller
     {
         //[1] Create New Marker
         Marker::create(
-            $request->except('user_id') + [
+            $request->validated() + [
             'user_id' => Auth::id(),
             // [2] Add Proof For This Marker
             'proof' => $request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null
@@ -270,7 +296,7 @@ class MarkerController extends Controller
     public function update(AddMarkerRequest $request, Marker $marker)
     {
     // [1] Check If This User Is a Owner Or Not
-      if ($request->user()->id !== $marker->user_id) {
+      if (auth()->id() !== $marker->user_id) {
         return response()->json([
             'status'=>false,
             'msg' => 'You can only edit your own marker.'],
@@ -278,7 +304,7 @@ class MarkerController extends Controller
       }
       // [2] Update All Data
       $request->proof=$request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null;
-        $marker->update($request->all());
+        $marker->update($request->validated());
         return response()->json([
             'status'=>true,
             'msg' => 'تم التعديل بنجاح'],

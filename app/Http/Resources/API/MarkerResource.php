@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\API;
 
-use App\Models\User;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MarkerResource extends JsonResource
@@ -15,11 +15,11 @@ class MarkerResource extends JsonResource
      */
     public function toArray($request)
     {
-        $user = User::where('id',$this->user_id)->get()->first();
-        $name = $user->f_name . ' '.$user->l_name;
+        // $user = User::where('id',$this->user_id)->get()->first();
+        // $name = $user->f_name . ' '.$user->l_name;
         return [
             'id'=>$this->id,
-            'user' => $name,
+            'user' => $this->user->f_name .' '. $this->user->l_name,
             'title' => $this->title,
             'gender' => $this->gender,
             'mental_state' => $this->mental_state,
@@ -32,7 +32,8 @@ class MarkerResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'links'=>[
-                'help' => url('api/v1/marker/'.$this->id.'/help/')
+                'help' => url('api/v1/marker/'.$this->id.'/help/'),
+                'report' => url('api/v1/marker/'.$this->id.'/report/'),
             ]
           ];
     }

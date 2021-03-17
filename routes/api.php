@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\HelpedController;
 use App\Http\Controllers\API\MarkerController;
 use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,7 @@ Route::group(['middleware' => ['auth:api'],'prefix' => 'v1'], function () {
     // Route::post('marker/{id}/help/',[HelpedController::class,'help']);
     Route::group(['prefix'=>'marker'],function(){
         Route::apiResource('/{marker}/help',HelpedController::class);
+        Route::apiResource('/{marker}/report',ReportController::class);
     });
 
     
