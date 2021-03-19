@@ -11,6 +11,8 @@ use App\Models\Report;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReportController extends Controller
 {
@@ -139,13 +141,22 @@ class ReportController extends Controller
         //     'description' => $request->description,
         //     'proof' => $request->proof
         // ]);
+
+        if($request->hasFile('proof') ){
+            
+            $proof = $request->proof;
+            $extension=$proof->extension();
+            $name = $marker.Auth::id().rand(0,9999999).'.'.$extension;
+            $proof->storeAs('uploads/reports/proofs',$name,'public');
+        }else{
+            $name = 'defult.png';
+        }
+        
         Report::create(
-            $request->validated() + [
+            $request->except('proof')+[
             'marker_id'=>$marker,
             'user_id' => Auth::id(),
-            
-            // [2] Add Proof For This Marker
-            'proof' => $request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null
+            'proof' => $name
             ]);
         return response()->json([
             'status'=>true,
@@ -207,6 +218,12 @@ class ReportController extends Controller
      */
     public function show(Marker $marker,Report $report)
     {
+        if(!$report){
+            return response()->json([
+                'error' => false,
+                'msg'=>'not found report'
+            ]);
+        }
         return new ReportResource($report);
     }
 

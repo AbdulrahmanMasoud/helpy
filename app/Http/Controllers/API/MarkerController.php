@@ -304,7 +304,7 @@ class MarkerController extends Controller
       }
       // [2] Update All Data
       $request->proof=$request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null;
-        $marker->update($request->validated());
+      $marker->update($request->validated());
         return response()->json([
             'status'=>true,
             'msg' => 'تم التعديل بنجاح'],
