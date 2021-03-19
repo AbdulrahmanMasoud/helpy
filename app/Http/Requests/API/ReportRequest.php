@@ -26,7 +26,7 @@ class ReportRequest extends FormRequest
         return [
             'title'=>'required|min:10|string',
             'description'=>'required|min:30',
-            'proof'=>'nullable|file|mimes:jpg,bmp,png,jpge',
+            'proof'=>'nullable|image|mimes:jpg,bmp,png,jpge',
         ];
     }
 }

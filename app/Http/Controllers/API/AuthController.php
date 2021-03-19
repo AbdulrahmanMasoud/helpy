@@ -9,11 +9,12 @@ use App\Http\Requests\API\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Traits\ResponsTrait;
 
 
 class AuthController extends Controller
 {
-
+use ResponsTrait;
    /**
      * This Login For Users 
      * 1- Valedation
@@ -77,12 +78,9 @@ class AuthController extends Controller
         $token =  Auth::guard('api')->attempt($credentials);
 
         // 3- if User Not Exist
-        // if(!$token){ 
-        //     return response()->json([
-        //     'status'=>false,
-        //     'msg'=>'This User Not Exist',
-        //     ],Response::HTTP_NOT_FOUND);
-        // }
+        if(!$token){ 
+            return $this->returnError(['errors'=>['password'=>'Password Not Found']],Response::HTTP_NOT_FOUND);
+        }
 
         // 4- if User Exist
         $user = Auth::guard('api')->user();
@@ -156,16 +154,8 @@ class AuthController extends Controller
      *          description="Bad Request"
      *      ),
      *      @OA\Response(
-     *          response=200,
-     *          description="Success Request"
-     *      ),
-     *      @OA\Response(
      *          response=201,
      *          description="Cearated Done",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
      *      )
      * )
 */
@@ -176,10 +166,7 @@ class AuthController extends Controller
             'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "defult/def.png"
         ]);
         // 5- Return Success Response 
-        return response()->json([
-            'status'=>true,
-            'msg'=>'You Are Register',
-        ],Response::HTTP_CREATED);
+        return $this->returnSuccessMessage('You Are Registerd',Response::HTTP_CREATED);
     }
 
 
@@ -213,10 +200,6 @@ class AuthController extends Controller
      *      @OA\Response(
      *          response=401,
      *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
      *      )
      * )
 */
@@ -227,11 +210,11 @@ class AuthController extends Controller
         Auth::logout();
 
        // 2- Return Success Message
-        return response()->json([
-            'status'=>true,
-            'msg'=>'You Are Logout',
-        ],Response::HTTP_OK);
-        
+        // return response()->json([
+        //     'status'=>true,
+        //     'msg'=>'You Are Logout',
+        // ],Response::HTTP_OK);
+        return $this->returnSuccessMessage('You Are Logout',Response::HTTP_OK);
     }
 
 }
