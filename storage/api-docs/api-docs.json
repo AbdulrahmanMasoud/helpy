@@ -649,6 +649,287 @@
                     }
                 ]
             }
+        },
+        "/api/v1/marker/{marker}/report": {
+            "get": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get All Marker Reports",
+                "description": "Returns All Reports About Marker",
+                "operationId": "getReports",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Must Add Marker Id To Can See All Reports About This Marker",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Add Report on Marker",
+                "description": "ٌJuet To Add Report To Marker",
+                "operationId": "addReport",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Must Add Marker Id To Can Add Report On It ",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Just Add Report Title",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Just Add Description  about Your Report",
+                                        "type": "string"
+                                    },
+                                    "proof": {
+                                        "description": "Proof Is Optionel",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "201": {
+                        "description": "Cearated Done",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/marker/{marker}/report/{report}": {
+            "get": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Get One Report",
+                "description": "Return One Report",
+                "operationId": "getReport",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Must Add Marker Id To Can See All Reports About This Marker",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "10"
+                    },
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "description": "Must Add Report Id To Can See This Report",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "ٌJust Update Report",
+                "description": "ٌJust Update Report By Id",
+                "operationId": "Update Report",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Must Add Marker Id To Update now wiche Report And Must You are Owner",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    },
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "description": "Must Add report Id To Update It And Must You are Owner",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "title",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "This Method Must Be (put)",
+                                        "type": "string",
+                                        "example": "put"
+                                    },
+                                    "title": {
+                                        "description": "Just Add Title About This Report",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Description  Is Optionel",
+                                        "type": "string"
+                                    },
+                                    "proof": {
+                                        "description": "Proof Is Optionel",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "201": {
+                        "description": "Cearated Done",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Delete Report",
+                "description": "Just You Can Delete You Owne Report",
+                "operationId": "deleteReport",
+                "parameters": [
+                    {
+                        "name": "marker",
+                        "in": "path",
+                        "description": "Marker Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    },
+                    {
+                        "name": "report",
+                        "in": "path",
+                        "description": "Report Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
         }
     },
     "components": {
