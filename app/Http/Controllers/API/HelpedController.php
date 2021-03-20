@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\HelpedRequest;
 use App\Models\Helped;
 use App\Models\Marker;
+use App\Traits\ResponsTrait;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class HelpedController extends Controller
 {
+    use ResponsTrait;
     /**
      * This Store Method To Make marker Done 
      * [1] Add New Row In Database Has user_id and Marker_id and you can add Description and Proof
@@ -84,9 +86,6 @@ class HelpedController extends Controller
         // [2] Make This Marker Helped
         Marker::where('id',$marker)->update(['status'=>1]);
         // [3] Return Success Message
-        return response()->json([
-            'status'=>true,
-            'msg'=>'Thank You For Your Help',
-        ],Response::HTTP_CREATED);
+        return $this->returnSuccessMessage('شكرا علي مساعدتك',Response::HTTP_CREATED);
     }
 }

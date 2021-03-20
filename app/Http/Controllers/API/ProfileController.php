@@ -154,9 +154,18 @@ class ProfileController extends Controller
 
         // auth()->user();
 
-
+        if($request->hasFile('avatar') ){
+            $avatar = $request->avatar;
+            $extension=$avatar->extension();
+            $name =Auth::id().rand(0,9999999).'.'.$extension;
+            $avatar->storeAs('uploads/avatars',$name,'public');
+        }else{
+            $name = 'defult.png';
+        }
        // 6- Update Data
-        $updateUser =  auth()->user()->update($request->validated());
+        $updateUser =  auth()->user()->update($request->except('avatar')+[
+            'avatar' =>$name
+        ]);
        // 7- If Updated Done
         if($updateUser){ 
             return response()->json([

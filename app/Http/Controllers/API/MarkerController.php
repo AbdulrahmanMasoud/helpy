@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\AddMarkerRequest;
 use App\Http\Resources\API\MarkerResource;
 use App\Models\Marker;
-use Illuminate\Http\Request;
+use App\Traits\ResponsTrait;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class MarkerController extends Controller
 {
+    use ResponsTrait;
     /**
      * This Method To Get All Markers
      * [1] Just Get All Marker From Resource And Make a Pagination Like 10 per Page
@@ -143,10 +143,7 @@ class MarkerController extends Controller
             ]);
 
         // [3] Return Success Response 
-        return response()->json([
-            'status'=>true,
-            'msg'=>'تم اضافة الحاله بنجاح',
-        ],Response::HTTP_CREATED);
+        return $this->returnSuccessMessage('تم اضافة الحاله بنجاح',Response::HTTP_CREATED);
     }
 
     /**
@@ -194,7 +191,8 @@ class MarkerController extends Controller
     public function show(Marker $marker)
     {
         // [1] Just Get One Marker
-        return new MarkerResource($marker);
+        return new MarkerResource($marker); 
+       
     }
 
     /**
@@ -232,6 +230,7 @@ class MarkerController extends Controller
      *                  @OA\Property(
      *                      property="_method",
      *                      type="string",
+     *                      example="put",
      *                      description="This Method Must Be (put)"
      *                  ),
      *                  @OA\Property(
@@ -297,18 +296,12 @@ class MarkerController extends Controller
     {
     // [1] Check If This User Is a Owner Or Not
       if (auth()->id() !== $marker->user_id) {
-        return response()->json([
-            'status'=>false,
-            'msg' => 'You can only edit your own marker.'],
-             403);
+            return $this->returnError('تستطيع فقط تعديل الحاله الخاصة بك',Response::HTTP_FORBIDDEN);
       }
       // [2] Update All Data
       $request->proof=$request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null;
       $marker->update($request->validated());
-        return response()->json([
-            'status'=>true,
-            'msg' => 'تم التعديل بنجاح'],
-             200);
+    return $this->returnSuccessMessage('تم التعديل بنجاح',Response::HTTP_OK);
     }
 
     /**
@@ -339,7 +332,7 @@ class MarkerController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation",
+     *          description="Success Request",
      *          @OA\MediaType(
      *              mediaType="application/json"
      *          )
@@ -358,16 +351,10 @@ class MarkerController extends Controller
     {
         //[1] Check If This User Is a Owner Or Not
         if (Auth::id() !== $marker->user_id) {
-            return response()->json([
-                'status'=>false,
-                'msg' => 'You can only Delete your own marker.'],
-                 403);
+            return $this->returnError('تستطيع فقط حذف الحاله الخاصة بك',Response::HTTP_FORBIDDEN);
           }
         // [2] Just Delete Marker Depend The Marker
         $marker->delete();
-        return response()->json([
-            'status'=>true,
-            'msg'=>'تم حذف الحالة'
-        ]);
+        return $this->returnSuccessMessage('تم حذف الحالة بنجاح',Response::HTTP_OK);
     }
 }

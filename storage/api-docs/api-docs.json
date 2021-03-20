@@ -494,8 +494,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Successful operation",
+                    "204": {
+                        "description": "No Content",
                         "content": {
                             "application/json": {}
                         }
@@ -902,8 +902,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Successful operation",
+                    "204": {
+                        "description": "No Content",
                         "content": {
                             "application/json": {}
                         }
