@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Traits\ResponsTrait;
-
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -78,7 +78,7 @@ use ResponsTrait;
 
         // 3- if User Not Exist
         if(!$token){ 
-            return $this->returnError(['errors'=>['password'=>'Password Not Found']],Response::HTTP_NOT_FOUND);
+            return $this->returnError('كلمه السر غير صحيحه',Response::HTTP_NOT_FOUND);
         }
 
         // 4- if User Exist
@@ -86,7 +86,7 @@ use ResponsTrait;
         // $user->user_token = $token;
         return response()->json([
             'status'=>true,
-            'msg'=>'Login User Done ',
+            'msg'=>'تم تسجيل الدخول بنجاح',
             'user_token'=>$token,
         ],Response::HTTP_OK);
     }
@@ -161,11 +161,17 @@ use ResponsTrait;
 
     public function register(RegisterRequest $request){
        // if ($request->hasFile('avatar')) {$path = $request->file('avatar')->store('uploads/avatars','public');}
-        User::create($request->validated() + [
+      $user =  User::create($request->validated() + [
             'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "defult/def.png"
         ]);
+        $token = JWTAuth::fromUser($user);
         // 5- Return Success Response 
-        return $this->returnSuccessMessage('تم التسجيل بنجاح',Response::HTTP_CREATED);
+        return response()->json([
+            'status'=>true,
+            'msg'=>'تم التسجيل بنجاح',
+            'user_token'=>$token,
+        ],Response::HTTP_CREATED);
+        // return $this->returnSuccessMessage('تم التسجيل بنجاح',Response::HTTP_CREATED);
     }
 
 

@@ -404,7 +404,8 @@
                                 "properties": {
                                     "_method": {
                                         "description": "This Method Must Be (put)",
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "put"
                                     },
                                     "title": {
                                         "description": "Just Add Title About This Marker",
@@ -494,8 +495,8 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content",
+                    "200": {
+                        "description": "Success Request",
                         "content": {
                             "application/json": {}
                         }
@@ -902,8 +903,8 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content",
+                    "200": {
+                        "description": "Success Request",
                         "content": {
                             "application/json": {}
                         }
