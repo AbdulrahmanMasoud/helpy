@@ -17,6 +17,7 @@ class MarkerResource extends JsonResource
     {
         // $user = User::where('id',$this->user_id)->get()->first();
         // $name = $user->f_name . ' '.$user->l_name;
+        
         return [
             'id'=>$this->id,
             'user' => $this->user->f_name .' '. $this->user->l_name,

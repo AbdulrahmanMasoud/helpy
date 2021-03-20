@@ -8,14 +8,13 @@ use App\Http\Resources\API\ReportCollection;
 use App\Http\Resources\API\ReportResource;
 use App\Models\Marker;
 use App\Models\Report;
+use App\Traits\ResponsTrait;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReportController extends Controller
 {
+    use ResponsTrait;
      /**
      * This Method To Get All Reports About Marker
      * [1] Just Get All Reports From Resource
@@ -60,7 +59,6 @@ class ReportController extends Controller
     public function index($marker)
     {
         $reports = Report::where('marker_id', $marker)->with('user','marker')->get();
-        // return ReportResource::collection($reports);
         return new ReportCollection($reports);
     }
 
@@ -143,7 +141,6 @@ class ReportController extends Controller
         // ]);
 
         if($request->hasFile('proof') ){
-            
             $proof = $request->proof;
             $extension=$proof->extension();
             $name = $marker.Auth::id().rand(0,9999999).'.'.$extension;
@@ -158,10 +155,7 @@ class ReportController extends Controller
             'user_id' => Auth::id(),
             'proof' => $name
             ]);
-        return response()->json([
-            'status'=>true,
-            'msg'=>'Thank You For Your Report',
-        ],Response::HTTP_CREATED);
+        return $this->returnSuccessMessage('شكرا علي هذا التقرير',Response::HTTP_CREATED);
     }
 
 
@@ -218,12 +212,7 @@ class ReportController extends Controller
      */
     public function show(Marker $marker,Report $report)
     {
-        if(!$report){
-            return response()->json([
-                'error' => false,
-                'msg'=>'not found report'
-            ]);
-        }
+        
         return new ReportResource($report);
     }
 
@@ -310,17 +299,11 @@ class ReportController extends Controller
     {
         // [1] Check If This User Is a Owner Or Not
       if (auth()->id() !== $report->user_id) {
-        return response()->json([
-            'status'=>false,
-            'msg' => 'You can only edit your own marker.'],
-             403);
+        return $this->returnError('تستطيع فقط تعديل التقرير الخاص بك',Response::HTTP_FORBIDDEN);
       }
       $request->proof=$request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null;
       $report->update($request->validated());
-      return response()->json([
-        'status'=>true,
-        'msg' => 'تم التعديل بنجاح'],
-         200);
+      return $this->returnSuccessMessage('تم التعديل بنجاح',Response::HTTP_OK);
     }
 
 
@@ -362,7 +345,7 @@ class ReportController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation",
+     *          description="Success Request",
      *          @OA\MediaType(
      *              mediaType="application/json"
      *          )
@@ -381,16 +364,10 @@ class ReportController extends Controller
     {
         //[1] Check If This User Is a Owner Or Not
         if (Auth::id() !== $report->user_id) {
-            return response()->json([
-                'status'=>false,
-                'msg' => 'You can only Delete your own report.'],
-                 403);
+            return $this->returnError('تستطيع فقط حذف التقرير الخاص بك',Response::HTTP_FORBIDDEN);
           }
         // [2] Just Delete Report Depend The Report And User Auth
         $report->delete();
-        return response()->json([
-            'status'=>true,
-            'msg'=>'تم حذف '
-        ]);
+        return $this->returnSuccessMessage('تم الحذف بنجاح',Response::HTTP_OK);
     }
 }

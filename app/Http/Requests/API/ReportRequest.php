@@ -24,6 +24,7 @@ class ReportRequest extends FormRequest
     public function rules()
     {
         return [
+            'marker_id'=>'exists:reports,marker_id',
             'title'=>'required|min:10|string',
             'description'=>'required|min:30',
             'proof'=>'nullable|image|mimes:jpg,bmp,png,jpge',

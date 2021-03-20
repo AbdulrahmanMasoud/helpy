@@ -72,7 +72,6 @@ use ResponsTrait;
 
     public function login(LoginRequest $request){
      
-        // dd($request->inputs());
         // 2- Check User
         $credentials = $request->validated(); // Get evrey thing validated from input
         $token =  Auth::guard('api')->attempt($credentials);
@@ -166,7 +165,7 @@ use ResponsTrait;
             'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "defult/def.png"
         ]);
         // 5- Return Success Response 
-        return $this->returnSuccessMessage('You Are Registerd',Response::HTTP_CREATED);
+        return $this->returnSuccessMessage('تم التسجيل بنجاح',Response::HTTP_CREATED);
     }
 
 
@@ -210,11 +209,7 @@ use ResponsTrait;
         Auth::logout();
 
        // 2- Return Success Message
-        // return response()->json([
-        //     'status'=>true,
-        //     'msg'=>'You Are Logout',
-        // ],Response::HTTP_OK);
-        return $this->returnSuccessMessage('You Are Logout',Response::HTTP_OK);
+        return $this->returnSuccessMessage('تم تسجيل الخروج',Response::HTTP_OK);
     }
 
 }
