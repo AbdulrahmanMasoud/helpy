@@ -7,12 +7,13 @@ use App\Http\Requests\API\HelpedRequest;
 use App\Models\Helped;
 use App\Models\Marker;
 use App\Traits\ResponsTrait;
+use App\Traits\UploadImageTrait;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class HelpedController extends Controller
 {
-    use ResponsTrait;
+    use ResponsTrait, UploadImageTrait;
     /**
      * This Store Method To Make marker Done 
      * [1] Add New Row In Database Has user_id and Marker_id and you can add Description and Proof
@@ -20,7 +21,6 @@ class HelpedController extends Controller
      * [3] Return Success Message 
      */
 
-    
     /**
      * @OA\Post(
      *      path="/api/v1/marker/{marker}/help",
@@ -74,18 +74,21 @@ class HelpedController extends Controller
      * )
 */
     public function store(HelpedRequest $request,$marker){
+
+        $proof = $this->uploadImageAndReturnName($request,'proof','helpedproof','app/public/uploads/helped/proofs','defalt.png');
         // [1] Add New Row
-        Helped::firstOrCreate([
+        Helped::updateOrCreate([
             // لو لقي دي موجودههيعمل تعديل بالنسبه للباقي لو مش لاقيها موجوده هيعمل واحده جدايده 
             'marker_id'=>$marker,
             'user_id'=> Auth::id(),
         ],[
             'description' => $request->description,
-            'proof' => $request->proof,
+            'proof' => $proof,
         ]);
         // [2] Make This Marker Helped
         Marker::where('id',$marker)->update(['status'=>1]);
         // [3] Return Success Message
         return $this->returnSuccessMessage('شكرا علي مساعدتك',Response::HTTP_CREATED);
     }
+
 }

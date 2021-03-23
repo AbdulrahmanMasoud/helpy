@@ -10,11 +10,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Traits\ResponsTrait;
+use App\Traits\UploadImageTrait;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-use ResponsTrait;
+use ResponsTrait,UploadImageTrait;
    /**
      * This Login For Users 
      * 1- Valedation
@@ -160,9 +161,11 @@ use ResponsTrait;
 */
 
     public function register(RegisterRequest $request){
-       // if ($request->hasFile('avatar')) {$path = $request->file('avatar')->store('uploads/avatars','public');}
-      $user =  User::create($request->validated() + [
-            'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('uploads/avatars','public'): "defult/def.png"
+
+    $avatar = $this->uploadImageAndReturnName($request,'avatar','avatar','app/public/uploads/avatars','defalt.png');
+
+    $user =  User::create($request->except('avatar') + [
+            'avatar' => $avatar
         ]);
         $token = JWTAuth::fromUser($user);
         // 5- Return Success Response 
@@ -171,7 +174,6 @@ use ResponsTrait;
             'msg'=>'تم التسجيل بنجاح',
             'user_token'=>$token,
         ],Response::HTTP_CREATED);
-        // return $this->returnSuccessMessage('تم التسجيل بنجاح',Response::HTTP_CREATED);
     }
 
 

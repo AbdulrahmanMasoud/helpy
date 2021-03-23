@@ -5,7 +5,6 @@ use App\Http\Controllers\API\HelpedController;
 use App\Http\Controllers\API\MarkerController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\ReportController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,15 +35,14 @@ Route::group(['middleware' => ['auth:api'],'prefix' => 'v1'], function () {
     Route::post('register',[AuthController::class,'register'])->name('register')->withoutMiddleware('auth:api');
     Route::post('login',[AuthController::class,'login'])->name('login')->withoutMiddleware('auth:api');
     Route::post('logout',[AuthController::class,'logout'])->name('logout');
-
+   
     Route::prefix('profile')->group(function () {
         Route::get('/',[ProfileController::class,'index']);
         Route::post('update',[ProfileController::class,'updateProfile']);
     });
-    Route::apiResource('marker',MarkerController::class);
-    // Route::apiResource('help/{$id}',HelpedController::class);
 
-    // Route::post('marker/{id}/help/',[HelpedController::class,'help']);
+    Route::get('marker/helped',[MarkerController::class,'helped']);
+    Route::apiResource('/marker',MarkerController::class);
     Route::group(['prefix'=>'marker'],function(){
         Route::apiResource('/{marker}/help',HelpedController::class);
         Route::apiResource('/{marker}/report',ReportController::class);

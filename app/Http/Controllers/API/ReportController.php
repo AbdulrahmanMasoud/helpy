@@ -9,12 +9,14 @@ use App\Http\Resources\API\ReportResource;
 use App\Models\Marker;
 use App\Models\Report;
 use App\Traits\ResponsTrait;
+use App\Traits\UploadImageTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
-    use ResponsTrait;
+    use ResponsTrait,UploadImageTrait;
      /**
      * This Method To Get All Reports About Marker
      * [1] Just Get All Reports From Resource
@@ -129,31 +131,12 @@ class ReportController extends Controller
 */
     public function store(ReportRequest $request,$marker)
     {
-    
-        // Report::firstOrCreate([
-        //     // لو لقي دي موجودههيعمل تعديل بالنسبه للباقي لو مش لاقيها موجوده هيعمل واحده جدايده 
-        //     'marker_id'=>$marker,
-        //     'user_id'=> Auth::id(),
-        // ],[
-        //     'title' => $request->title,
-        //     'description' => $request->description,
-        //     'proof' => $request->proof
-        // ]);
-
-        if($request->hasFile('proof') ){
-            $proof = $request->proof;
-            $extension=$proof->extension();
-            $name = $marker.Auth::id().rand(0,9999999).'.'.$extension;
-            $proof->storeAs('uploads/reports/proofs',$name,'public');
-        }else{
-            $name = 'defult.png';
-        }
-        
+      $proof = $this->uploadImageAndReturnName($request,'proof','reportproof','app/public/uploads/reports/proofs','defalt.png');
         Report::create(
-            $request->except('proof')+[
+          $request->except('proof') +[
             'marker_id'=>$marker,
             'user_id' => Auth::id(),
-            'proof' => $name
+            'proof' => $proof
             ]);
         return $this->returnSuccessMessage('شكرا علي هذا التقرير',Response::HTTP_CREATED);
     }
@@ -301,8 +284,8 @@ class ReportController extends Controller
       if (auth()->id() !== $report->user_id) {
         return $this->returnError('تستطيع فقط تعديل التقرير الخاص بك',Response::HTTP_FORBIDDEN);
       }
-      $request->proof=$request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null;
-      $report->update($request->validated());
+    $proof = $this->uploadImageAndReturnName($request,'proof','reportproof','app/public/uploads/reports/proofs','defalt.png');
+      $report->update($request->except('proof')+['proof'=>$proof]);
       return $this->returnSuccessMessage('تم التعديل بنجاح',Response::HTTP_OK);
     }
 

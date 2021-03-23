@@ -5,12 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UpdateProfileRequest;
 use App\Models\User;
+use App\Traits\UploadImageTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
 {
+    use UploadImageTrait;
     /** This Method To Get All Data About User
      * 1- make new Obj fro carunt User
      * 2- Response data as a json
@@ -43,7 +45,7 @@ class ProfileController extends Controller
     {
         // 1- new obj
         $user = Auth::user();
-        $user->avatar = public_path('storage/app/public/uploads/avatars').'/'.$user->avatar;
+        $user->avatar = asset('storage/uploads/reports/proofs/'.$user->avatar);
         // 2- Response Data
         return response()->json([
             'status' => true,
@@ -145,32 +147,16 @@ class ProfileController extends Controller
 
     public function updateProfile(UpdateProfileRequest $request)
     {
-        // 4- If Requst Has File
-        // if ($request->hasFile('avatar')) {
-        //     $path = $request->file('avatar')->store('uploads/avatars','public');
-        // }
-        // 5- Get User Data
-        // $user = User::where('id',Auth::id())->first();
-
-        // auth()->user();
-
-        if($request->hasFile('avatar') ){
-            $avatar = $request->avatar;
-            $extension=$avatar->extension();
-            $name =Auth::id().rand(0,9999999).'.'.$extension;
-            $avatar->storeAs('uploads/avatars',$name,'public');
-        }else{
-            $name = 'defult.png';
-        }
+        $avatar = $this->uploadImageAndReturnName($request,'avatar','avatar','app/public/uploads/avatars','defalt.png');
        // 6- Update Data
         $updateUser =  auth()->user()->update($request->except('avatar')+[
-            'avatar' =>$name
+            'avatar' =>$avatar
         ]);
        // 7- If Updated Done
         if($updateUser){ 
             return response()->json([
                 'status'=>true,
-                'msg'=>'Updated Done'
+                'msg'=>'تم التعديل بنجاح'
             ],Response::HTTP_CREATED);
         }
   

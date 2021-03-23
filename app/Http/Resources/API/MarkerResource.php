@@ -15,8 +15,6 @@ class MarkerResource extends JsonResource
      */
     public function toArray($request)
     {
-        // $user = User::where('id',$this->user_id)->get()->first();
-        // $name = $user->f_name . ' '.$user->l_name;
         
         return [
             'id'=>$this->id,
@@ -28,7 +26,7 @@ class MarkerResource extends JsonResource
             'description' => $this->description,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'proof' => $this->proof,
+            'proof' => asset('storage/uploads/markers/proofs/'.$this->proof),
             'status' => $this->status ==  1?  "تمت المساعده":"لم تتم المساعده",
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
