@@ -7,12 +7,13 @@ use App\Http\Requests\API\AddMarkerRequest;
 use App\Http\Resources\API\MarkerResource;
 use App\Models\Marker;
 use App\Traits\ResponsTrait;
+use App\Traits\UploadImageTrait;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class MarkerController extends Controller
 {
-    use ResponsTrait;
+    use ResponsTrait, UploadImageTrait;
     /**
      * This Method To Get All Markers
      * [1] Just Get All Marker From Resource And Make a Pagination Like 10 per Page
@@ -46,9 +47,47 @@ class MarkerController extends Controller
      */
     public function index()
     {
-        // [1] Just Get All Marker
-        $marker = Marker::with('user')->simplePaginate(10);
+        // [1] Just Get All Marker Not Helped
+        $marker = Marker::where('status',0)->with('user')->simplePaginate(10);
         return MarkerResource::collection($marker);
+    }
+
+    /**
+     * This Method To Get All Markers Has Helped
+     * [1] Just Get All Marker From Resource And Make a Pagination Like 10 per Page
+     */
+     /**
+     * @OA\Get(
+     *      path="/api/v1/marker/helped",
+     *      operationId="getAllHelpedMarker",
+     *      tags={"Marker"},
+     *      summary="Get All Helped Marker",
+     *      description="Returns All Markers Helped",
+     *      security={
+     *         {"bearer": {}}
+     *      },
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json"
+     *          )
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
+    public function helped()
+    {
+        // [1] Just Get All Marker Helped
+        $helpedMarker = Marker::where('status',1)->with('user')->simplePaginate(10);
+         return MarkerResource::collection($helpedMarker);
     }
 
    /**
@@ -134,12 +173,12 @@ class MarkerController extends Controller
 */
     public function store(AddMarkerRequest $request)
     {
+        $proof = $this->uploadImageAndReturnName($request,'proof','markerproof','app/public/uploads/markers/proofs','defalt.png');
         //[1] Create New Marker
         Marker::create(
-            $request->validated() + [
+            $request->except('proof') + [
             'user_id' => Auth::id(),
-            // [2] Add Proof For This Marker
-            'proof' => $request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null
+            'proof' => $proof
             ]);
 
         // [3] Return Success Response 
@@ -299,8 +338,8 @@ class MarkerController extends Controller
             return $this->returnError('تستطيع فقط تعديل الحاله الخاصة بك',Response::HTTP_FORBIDDEN);
       }
       // [2] Update All Data
-      $request->proof=$request->hasFile('proof') ? $request->file('proof')->store('uploads/proofs','public'): null;
-      $marker->update($request->validated());
+        $proof = $this->uploadImageAndReturnName($request,'proof','markerproof','app/public/uploads/markers/proofs','defalt.png');
+      $marker->update($request->except('proof')+['proof'=>$proof]);
     return $this->returnSuccessMessage('تم التعديل بنجاح',Response::HTTP_OK);
     }
 
@@ -357,4 +396,6 @@ class MarkerController extends Controller
         $marker->delete();
         return $this->returnSuccessMessage('تم حذف الحالة بنجاح',Response::HTTP_OK);
     }
+
+    
 }

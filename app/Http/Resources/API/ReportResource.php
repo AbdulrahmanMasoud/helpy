@@ -20,7 +20,7 @@ class ReportResource extends JsonResource
             'marker' => $this->marker->title,
             'title' => $this->title,
             'description' => $this->description,
-            'proof' => $this->proof,
+            'proof' => asset('storage/uploads/reports/proofs/'.$this->proof),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
           ];
