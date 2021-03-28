@@ -22,4 +22,31 @@ So now you can add Marker and edit  it and you can see all Markers has helped on
 <br>
 <b>This How To Use API Let's Go To How to Run This Project On Your Local PC</b>
 <br>
-## How to Run This Project On Your Local PC
+## How to Run This Project On Your Local PC <br>
+Let's remember Laravel is PHP Framework so you will Run PHP in Your PC
+so a PHP code will run as a web server module or as a command-line interface. To run PHP for the web, you need to install a Web Server like Apache and you also need a database server like MySQL. There are various web servers for running PHP programs like WAMP & XAMPP. WAMP server is supported in windows and XAMP is supported in both Windows and Linux. 
+You Can Download XAMPP From <a href="https://www.apachefriends.org/download.html">Here</a><br>
+Now You Can RUN Any PHP code In Your PC By Add Your Script In htdocs in Xampp Folder
+<br> But you can't run Laravel Project cuse you need to install Composer And then you can Install Laravel From Compser <br>
+Laravel utilizes Composer to manage its dependencies.
+<br>
+If your computer already has PHP and Composer installed, you may create a new Laravel project by using Composer directly. After the application has been created, you may start Laravel's local development server using the Artisan CLI's
+```  composer create-project laravel/laravel example-app ```
+Now you can Install Laravel Framework and also you can use any Laravel Projects. <br>
+So Now You Have Everything to Run this Project.
+
+## Run Project
+1- You Must Clone This Repo Using This Comand Or Download It as ZIP File
+``` git clone https://github.com/AbdulrahmanMasoud/helpy.git ```
+<br>
+2- Open Xampp to make server on your PC
+3- make database called helpy in your xampp server in PHPMyAdmin
+4- open project and run this command to migrate database
+``` php artisan migrate ``` <br>
+5- also run ths command to run project on xampp server
+``` php artisan serv ``` <br>
+6- no you can open API documentaion From this link in your PC
+http://127.0.0.1:8000/api/documentation
+<br>
+<b>That's all about how to run this code</b>
+2-
