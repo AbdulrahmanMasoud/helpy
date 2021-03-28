@@ -50,4 +50,4 @@ http://127.0.0.1:8000/api/documentation
 <br>
 <b>That's all about how to run this code</b>
 <br> <br>
-<b>Wait For All The New Features And Updates...</b>
+<b align="center">Wait For All The New Features And Updates...</b>
