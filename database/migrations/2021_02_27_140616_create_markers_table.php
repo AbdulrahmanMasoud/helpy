@@ -22,8 +22,8 @@ class CreateMarkersTable extends Migration
             $table->enum('mental_state',['سوي عقليا','غير سوي عقليا']);
             $table->enum('adult',['طفل','بالغ','مُسن']);
             $table->text('description')->nullable();
-            $table->unsignedDecimal('latitude', 10, 8);
-            $table->unsignedDecimal('longitude', 11, 8);
+            $table->double('latitude', 10, 8);
+            $table->double('longitude', 11, 8);
             $table->string('proof')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
