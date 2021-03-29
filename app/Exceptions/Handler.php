@@ -42,12 +42,12 @@ class Handler extends ExceptionHandler
                 'msg'=>'لا يوجد بيانات'
             ],404);
         });
-        $this->renderable(function (QueryException  $e, $request) {
-            return response()->json([
-                'status'=>false,
-                'msg'=>'خطأ في قاعده البيانات'
-            ],404);
-        });
+//         $this->renderable(function (QueryException  $e, $request) {
+//             return response()->json([
+//                 'status'=>false,
+//                 'msg'=>'خطأ في قاعده البيانات'
+//             ],404);
+//         });
         
     }
 }
