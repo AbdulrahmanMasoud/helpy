@@ -48,7 +48,8 @@ class MarkerController extends Controller
     public function index()
     {
         // [1] Just Get All Marker Not Helped
-        $marker = Marker::where('status',0)->with('user')->simplePaginate(10);
+        //$marker = Marker::where('status',0)->with('user')->simplePaginate(10);
+        $marker = Marker::where('status',0)->with('user')->get();
         return MarkerResource::collection($marker);
     }
 
@@ -86,7 +87,8 @@ class MarkerController extends Controller
     public function helped()
     {
         // [1] Just Get All Marker Helped
-        $helpedMarker = Marker::where('status',1)->with('user')->simplePaginate(10);
+        //$helpedMarker = Marker::where('status',1)->with('user')->simplePaginate(10);
+        $helpedMarker = Marker::where('status',1)->with('user')->get();
          return MarkerResource::collection($helpedMarker);
     }
 
